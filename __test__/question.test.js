@@ -44,7 +44,6 @@ describe('Implement testcase', () => {
             'roomId',
             'createdAt',
             'updatedAt',
-            'Room',
           ]);
 
           expect(questions[0].text).to.equal('this is simple question');
