@@ -11,7 +11,7 @@ module.exports = {
         include: {
           model: Room,
           where: { id: roomId, userId: 1 },
-          attributes: [],
+          attributes: ['id', 'title'],
         },
       });
       res.json({ questions });
