@@ -1,16 +1,15 @@
-const { Room } = require("../../models");
-const { Question } = require("../../models");
+const { Question, Room } = require("../../models");
 
 module.exports = {
   post: async (req, res) => {
     // const sess = req.session;
 
     const { title, description, questions } = req.body;
-    //더미유저로 연결해서 검사.
     try {
       // if (sess.userid) {
       await Room.create(
         {
+          //더미유저로 연결해서 검사.
           userId: 1,
           title: title,
           description: description,
