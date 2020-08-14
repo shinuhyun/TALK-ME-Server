@@ -13,12 +13,12 @@ module.exports = {
     try {
       // if (sess.userid) {
       const rooms = await Room.findAll({
-        where: { userId: 1 },
+        where: { userId: 2 },
         attributes: {
           include: [
             [
               Sequelize.fn("COUNT", Sequelize.col("Questions.id")),
-              "QuestionCount",
+              "questionCount",
             ],
           ],
         },
@@ -31,14 +31,10 @@ module.exports = {
         group: ["Room.id"],
       });
 
-      if (rooms.length > 0) {
-        res.status(200).json({ rooms });
-      } else {
-        res.status(404).send({ message: "Not Found" });
-        // }
-        // } else {
-        //   res.status(401).send({ message: "Unauthorized User" });
-      }
+      res.status(200).json({ rooms });
+      // }
+      // } else {
+      //   res.status(401).send({ message: "Unauthorized User" });
     } catch (err) {
       res.status(500).send({ message: "Server Error" });
     }
