@@ -44,8 +44,9 @@ describe('Implement testcase', () => {
             'roomId',
             'createdAt',
             'updatedAt',
+            'Room',
           ]);
-
+          expect(questions[0]['Room']).has.all.keys(['id', 'title']);
           expect(questions[0].text).to.equal('this is simple question');
           expect(questions[0].roomId).to.equal(1);
           expect(questions[1].text).to.equal('Hello World!');

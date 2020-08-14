@@ -6,7 +6,7 @@ module.exports = {
     const roomId = req.originalUrl.split(/\//)[2];
 
     try {
-      // roomId에 해당하는 모든 questions 가져오기, room의 columns 제외하고 들고오기
+      // roomId에 해당하는 모든 questions 가져오기, room의 id, title과 같이 보내기
       const questions = await Question.findAll({
         include: {
           model: Room,

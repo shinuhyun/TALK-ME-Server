@@ -1,8 +1,9 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const { roomController } = require("../controllers");
+const { roomController } = require('../controllers');
 
-router.post("/", roomController.roomCreate.post);
+router.post('/', roomController.roomCreate.post);
+router.delete('/', roomController.roomDelete.delete);
 
 module.exports = router;

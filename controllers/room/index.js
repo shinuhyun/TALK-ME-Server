@@ -1,3 +1,4 @@
 module.exports = {
-  roomCreate: require("./roomCreate"),
+  roomCreate: require('./roomCreate'),
+  roomDelete: require('./roomDelete'),
 };
