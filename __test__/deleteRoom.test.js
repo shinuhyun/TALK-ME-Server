@@ -37,7 +37,7 @@ describe('Implement testcase', () => {
             return;
           }
           expect(res).to.have.status(200);
-          expect(res.body.message).to.equal('Room deleted.');
+          expect(res.body.message).to.equal('Room deleted');
           done();
         });
     });
@@ -72,6 +72,7 @@ describe('Implement testcase', () => {
           }
           expect(res).to.have.status(404);
           expect(res.body.message).to.equal('Room Not Found');
+          done();
         });
     });
   });
