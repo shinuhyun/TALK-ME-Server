@@ -26,7 +26,7 @@ module.exports = {
     } catch (err) {
       // server error handling
       console.log(err);
-      res.sendStatus(500);
+      res.status(500).json({ message: 'Server Error' });
     }
   },
 };

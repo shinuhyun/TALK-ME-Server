@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'cascade',
       });
       this.hasMany(models.Question, {
+        as: 'questions', // alias 적용
         foreignKey: 'roomId',
         onDelete: 'cascade',
       });
