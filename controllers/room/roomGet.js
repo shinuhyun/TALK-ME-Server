@@ -17,7 +17,6 @@ module.exports = {
           },
         ],
       });
-      console.log(result);
 
       if (result === null) {
         res.status(404).json({ message: 'Not Found' });
