@@ -1,4 +1,4 @@
-const { Room, Question, User } = require('../../models');
+const { Room, Question } = require('../../models');
 
 module.exports = {
   get: async (req, res) => {
