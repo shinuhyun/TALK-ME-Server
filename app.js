@@ -10,6 +10,7 @@ const port = process.env.PORT || 4000;
 const questionRouter = require("./routes/question");
 const roomRouter = require("./routes/room");
 const roomListRouter = require("./routes/roomList");
+const userRouter = require("./routes/user");
 
 app.use(
   session({
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use("/room/:roomId/questions", questionRouter);
 app.use("/room", roomRouter);
 app.use("/roomList", roomListRouter);
+app.use("/auth", userRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
