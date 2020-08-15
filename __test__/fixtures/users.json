@@ -1,10 +1,12 @@
 [
   {
     "email": "example@gmail.com",
-    "password": "1234"
+    "password": "1234",
+    "salt": "salt"
   },
   {
     "email": "hoho@naver.com",
-    "password": "1213"
+    "password": "1213",
+    "salt": "salt"
   }
 ]
