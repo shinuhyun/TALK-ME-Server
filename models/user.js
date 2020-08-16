@@ -1,57 +1,44 @@
-"use strict";
-const crypto = require("crypto");
+'use strict';
+const crypto = require('crypto');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "User",
-    {
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          isEmail: true,
-        },
-      },
-      secretKey: DataTypes.STRING,
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        get() {
-          return () => this.getDataValue("password");
-        },
-      },
-      salt: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        get() {
-          return () => this.getDataValue("salt");
-        },
+  const User = sequelize.define('User', {
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
       },
     },
-    {
-      beforeFind: (data, option) => {
-        if (data.where.password) {
-          data.where.password = User.encryptPassword(
-            data.where.password,
-            this.salt()
-          );
-        }
+    secretKey: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      get() {
+        return () => this.getDataValue('password');
       },
-    }
-  );
+    },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      get() {
+        return () => this.getDataValue('salt');
+      },
+    },
+  });
 
   User.generateSalt = function () {
-    return Math.round(new Date().valueOf() * Math.random()) + "";
+    return Math.round(new Date().valueOf() * Math.random()) + '';
   };
   User.encryptPassword = function (plainText, salt) {
     return crypto
-      .createHmac("sha512", salt)
+      .createHmac('sha512', salt)
       .update(plainText)
       .update(salt)
-      .digest("hex");
+      .digest('hex');
   };
   const setSaltAndPassword = (user) => {
-    if (user.changed("password")) {
+    if (user.changed('password')) {
       user.salt = User.generateSalt();
       user.password = User.encryptPassword(user.password(), user.salt());
     }
@@ -59,10 +46,35 @@ module.exports = (sequelize, DataTypes) => {
   User.beforeCreate(setSaltAndPassword);
   User.beforeUpdate(setSaltAndPassword);
 
+  User.findOneByEmailAndPassword = async (email, password) => {
+    try {
+      // email이 일치하는 record를 찾아 salt값 가져오기
+      const { salt } = (await User.findOne({
+        attributes: ['salt'],
+        where: { email },
+      })) || { salt: null };
+
+      // email이 일치하는 record가 없을 경우
+      if (salt === null) {
+        return null;
+      }
+
+      // 가져온 salt값으로 암호화된 password 값 구하기
+      const encryptedPassword = User.encryptPassword(password, salt());
+      // email과 암호화된 password 값이 일치하는 유저 찾기
+      const result = await User.findOne({
+        where: { email, password: encryptedPassword },
+      });
+      return result;
+    } catch (err) {
+      throw Error(err);
+    }
+  };
+
   User.associate = function (models) {
     this.hasMany(models.Room, {
-      foreignKey: "userId",
-      onDelete: "cascade",
+      foreignKey: 'userId',
+      onDelete: 'cascade',
     });
   };
   return User;
