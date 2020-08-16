@@ -1,4 +1,4 @@
-const { Question, Room } = require("../../models");
+const { Question, Room } = require('../../models');
 
 module.exports = {
   post: async (req, res) => {
@@ -13,19 +13,20 @@ module.exports = {
           userId: 1,
           title: title,
           description: description,
-          Questions: questions.map((text) => ({
+          questions: questions.map((text) => ({
             text,
           })),
         },
         {
-          include: [Question],
+          include: [{ model: Question, as: 'questions' }],
         }
       ).then((room) => {
         res.status(201).send({ room: { id: room.id } });
       });
       // }
     } catch (err) {
-      res.status(500).send({ message: "Server Error" });
+      console.log(err);
+      res.status(500).send({ message: 'Server Error' });
     }
   },
 };

@@ -17,7 +17,7 @@ module.exports = {
         attributes: {
           include: [
             [
-              Sequelize.fn('COUNT', Sequelize.col('Questions.id')),
+              Sequelize.fn('COUNT', Sequelize.col('questions.id')),
               'questionCount',
             ],
           ],
@@ -25,6 +25,7 @@ module.exports = {
         include: [
           {
             model: Question,
+            as: 'questions',
             attributes: [],
           },
         ],
