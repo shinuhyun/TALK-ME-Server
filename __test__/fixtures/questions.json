@@ -6,5 +6,9 @@
   {
     "text": "Hello World!",
     "roomId": 1
+  },
+  {
+    "text": "where are you going?",
+    "roomId": 2
   }
 ]

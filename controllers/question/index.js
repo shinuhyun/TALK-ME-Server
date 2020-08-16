@@ -1,4 +1,4 @@
-const { Question, Room } = require("../../models");
+const { Question, Room } = require('../../models');
 
 module.exports = {
   get: async (req, res) => {
@@ -13,12 +13,12 @@ module.exports = {
           include: {
             model: Room,
             where: { id: roomId, userId: sess.userId },
-            attributes: ["id", "title"],
+            attributes: ['id', 'title'],
           },
         });
         res.json({ questions });
       } else {
-        res.status(401).send({ message: "Unauthorized User" });
+        res.status(401).send({ message: 'Unauthorized User' });
       }
     } catch (err) {
       // server error handling

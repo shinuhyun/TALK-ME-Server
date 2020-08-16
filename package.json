@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha __test__/*.js",
+    "test": "mocha __test__/**/*.js",
+    "test:auth": "mocha __test__/auth/*.js",
+    "test:question": "mocha __test__/question/*.js",
+    "test:room": "mocha __test__/room/*.js",
     "start": "nodemon app.js"
   },
   "repository": {
