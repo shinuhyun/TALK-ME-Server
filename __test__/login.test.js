@@ -24,18 +24,45 @@ describe('Implement testcase', () => {
       chai
         .request(app)
         .post('/auth/login')
-        .send({ email: 'dodose@naver.com', password: 'cutedodose11' })
+        .send({ email: 'example@gmail.com', password: '1234' })
         .end((err, res) => {
           if (err) {
             done(err);
             return;
           }
-          expect(res).to.have.status(201);
+          expect(res).to.have.status(200);
           expect(res.body.message).to.equal('login success!');
           done();
         });
 
-      it('should respond NOT FOUND with wrong login data');
+      it('should respond NOT FOUND with wrong login data', (done) => {
+        const requester = chai.request(app).keepOpen();
+        Promise.all([
+          requester
+            .post('/auth/login')
+            .send({ email: 'notfound@gmail.com', password: 'notfoundpwd' }),
+          requester
+            .post('/auth/login')
+            .send({ email: 'wrong email format', password: 'wrongpassword' }),
+        ])
+          .then((responses) => {
+            expect(responses[0]).to.have.status(404);
+            expect(responses[0].body.message).to.equal(
+              'login fail; Wrong info'
+            );
+            expect(responses[1]).to.have.status(404);
+            expect(responses[1].body.message).to.equal(
+              'login fail; Wrong info'
+            );
+            done();
+          })
+          .then(() => {
+            requester.close();
+          })
+          .catch((err) => {
+            done(err);
+          });
+      });
     });
   });
 });
