@@ -3,4 +3,5 @@ module.exports = {
   login: require('./login'),
   logout: require('./logout'),
   isLogin: require('./isLogin'),
+  social: require('./social'),
 };
