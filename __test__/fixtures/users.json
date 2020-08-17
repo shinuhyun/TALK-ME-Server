@@ -8,5 +8,10 @@
     "email": "hoho@naver.com",
     "password": "1213",
     "salt": "salt"
+  },
+  {
+    "email": "lav@gmail.com",
+    "password": "3333",
+    "salt": "salt"
   }
 ]

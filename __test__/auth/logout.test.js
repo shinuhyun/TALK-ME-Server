@@ -7,11 +7,11 @@ const expect = chai.expect;
 
 chai.use(chaiHttp);
 
-const app = require('../app');
-const { User, sequelize } = require('../models');
-const usersFixture = require('./fixtures/users.json');
+const app = require('../../app');
+const { User, sequelize } = require('../../models');
+const usersFixture = require('../fixtures/users.json');
 
-describe('Implement testcase', () => {
+describe('Auth GET API - LOGOUT', () => {
   beforeEach(async () => {
     // Setup/TearDown : Check Fixtures folder
     await sequelize.sync({ force: true });

@@ -1,4 +1,4 @@
-const { Question, Room } = require("../../models");
+const { Question, Room } = require('../../models');
 
 module.exports = {
   patch: async (req, res) => {
@@ -19,20 +19,25 @@ module.exports = {
           await Question.destroy({
             where: { roomId: roomId },
           });
-          questions.forEach((question) =>
-            room.setQuestions(
-              Question.create({ text: question, roomId: roomId })
-            )
-          );
-          res.status(200).send("Room is edited");
+
+          // 비동기 배열 처리
+          for (let i = 0; i < questions.length; i += 1) {
+            const newQuestion = await Question.create({
+              text: questions[i],
+              roomId: roomId,
+            });
+            await room.addQuestion(newQuestion);
+          }
+
+          res.status(200).send({ message: 'Room is edited' });
         } else {
-          res.status(404).send({ message: "Room Not Found" });
+          res.status(404).send({ message: 'Room Not Found' });
         }
       } else {
-        res.status(401).send({ message: "Unauthorized User" });
+        res.status(401).send({ message: 'Unauthorized User' });
       }
     } catch (err) {
-      res.status(500).send({ message: "Server Error" });
+      res.status(500).send({ message: 'Server Error' });
     }
   },
 };
