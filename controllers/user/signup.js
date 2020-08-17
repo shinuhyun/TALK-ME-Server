@@ -1,4 +1,4 @@
-const { User } = require('../../models');
+const { User } = require("../../models");
 
 module.exports = {
   post: async (req, res) => {
@@ -9,14 +9,14 @@ module.exports = {
         defaults: { password: password },
       }).then(async ([user, created]) => {
         if (!created) {
-          return res.status(409).send({ message: 'email already exists' });
+          return res.status(409).send({ message: "email already exists" });
         }
-        res.status(201).send({ message: 'SignUp success' });
+        res.status(201).send({ message: "SignUp success" });
       });
     } catch (err) {
       console.log(err);
       console.log(email, password);
-      res.status(500).send({ message: 'Server Error' });
+      res.status(500).send({ message: "Server Error" });
     }
   },
 };
