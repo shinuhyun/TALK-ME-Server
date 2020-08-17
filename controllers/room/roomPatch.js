@@ -1,4 +1,4 @@
-const { Question, Room } = require('../../models');
+const { Question, Room } = require("../../models");
 
 module.exports = {
   patch: async (req, res) => {
@@ -29,15 +29,15 @@ module.exports = {
             await room.addQuestion(newQuestion);
           }
 
-          res.status(200).send({ message: 'Room is edited' });
+          res.status(200).send({ message: "Room is edited" });
         } else {
-          res.status(404).send({ message: 'Room Not Found' });
+          res.status(404).send({ message: "Room Not Found" });
         }
       } else {
-        res.status(401).send({ message: 'Unauthorized User' });
+        res.status(401).send({ message: "Unauthorized User" });
       }
     } catch (err) {
-      res.status(500).send({ message: 'Server Error' });
+      res.status(500).send({ message: "Server Error" });
     }
   },
 };
