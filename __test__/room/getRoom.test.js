@@ -79,7 +79,7 @@ describe('Room GET API', () => {
     it('should respond Unauthorized if session id does not exists in the session store', (done) => {
       chai
         .request(app)
-        .delete('/room')
+        .get('/room/1')
         .end((err, res) => {
           if (err) {
             done(err);
