@@ -39,7 +39,7 @@ describe('Auth GET API - LOGIN', () => {
     it('should respond Unauthorized if session id does not exists in session store', (done) => {
       chai
         .request(app)
-        .post('/auth/isLogin')
+        .get('/auth/isLogin')
         .end((err, res) => {
           if (err) {
             done(err);
@@ -47,6 +47,7 @@ describe('Auth GET API - LOGIN', () => {
           }
           expect(res).to.have.status(401);
           expect(res.body.message).to.equal('unauthorized');
+          done();
         });
     });
   });
