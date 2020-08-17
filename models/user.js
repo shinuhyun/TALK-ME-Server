@@ -1,8 +1,8 @@
-'use strict';
-const crypto = require('crypto');
+"use strict";
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const User = sequelize.define("User", {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -21,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.generateSalt = function () {
-    return crypto.randomBytes(16).toString('base64');
+    return crypto.randomBytes(16).toString("base64");
   };
   User.encryptPassword = function (plainText, salt) {
     return crypto
-      .createHash('RSA-SHA256')
+      .createHash("RSA-SHA256")
       .update(plainText)
       .update(salt)
-      .digest('hex');
+      .digest("hex");
   };
 
   User.beforeCreate((user) => {
@@ -37,12 +37,12 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.updatePassword = async (email, newPassword) => {
-    let user = await User.findOne({ attributes: ['salt'], where: { email } });
+    let user = await User.findOne({ attributes: ["salt"], where: { email } });
     if (user !== null) {
       const { salt } = user;
       const encryptedPassword = User.encryptPassword(newPassword, salt);
       const [isUpdated] = await User.update(
-        { password: encryptedPassword },
+        { password: encryptedPassword, secretKey: null },
         { where: { email } }
       );
       return isUpdated;
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.findOneByEmailAndPassword = async (email, password) => {
-    let user = await User.findOne({ attributes: ['salt'], where: { email } });
+    let user = await User.findOne({ attributes: ["salt"], where: { email } });
     if (user !== null) {
       const { salt } = user;
       const encryptedPassword = User.encryptPassword(password, salt);
@@ -64,10 +64,16 @@ module.exports = (sequelize, DataTypes) => {
     return user;
   };
 
+  User.generateSecretkey = async (email) => {
+    const secretKeySalt = Math.round(new Date().valueOf() * Math.random()) + "";
+    const secretKey = User.encryptPassword(email, secretKeySalt);
+    return secretKey.slice(0, 10);
+  };
+
   User.associate = function (models) {
     this.hasMany(models.Room, {
-      foreignKey: 'userId',
-      onDelete: 'cascade',
+      foreignKey: "userId",
+      onDelete: "cascade",
     });
   };
 
