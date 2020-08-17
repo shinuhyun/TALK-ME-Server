@@ -1,8 +1,8 @@
-'use strict';
-const crypto = require('crypto');
+"use strict";
+const crypto = require("crypto");
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const User = sequelize.define("User", {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -15,30 +15,31 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       get() {
-        return () => this.getDataValue('password');
+        return () => this.getDataValue("password");
       },
     },
     salt: {
       type: DataTypes.STRING,
       allowNull: false,
       get() {
-        return () => this.getDataValue('salt');
+        return () => this.getDataValue("salt");
       },
     },
   });
 
   User.generateSalt = function () {
-    return Math.round(new Date().valueOf() * Math.random()) + '';
+    return Math.round(new Date().valueOf() * Math.random()) + "";
   };
   User.encryptPassword = function (plainText, salt) {
     return crypto
-      .createHmac('sha512', salt)
+      .createHmac("sha512", salt)
       .update(plainText)
       .update(salt)
-      .digest('hex');
+      .digest("hex");
   };
+
   const setSaltAndPassword = (user) => {
-    if (user.changed('password')) {
+    if (user.changed("password")) {
       user.salt = User.generateSalt();
       user.password = User.encryptPassword(user.password(), user.salt());
     }
@@ -50,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
   const convertToEncryptPassword = async (email, password) => {
     // email이 일치하는 record를 찾아 salt값 가져오기
     const { salt } = (await User.findOne({
-      attributes: ['salt'],
+      attributes: ["salt"],
       where: { email },
     })) || { salt: null };
 
@@ -80,10 +81,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
 
+  User.generateSecretkey = async (email) => {
+    const secretKeySalt = Math.round(new Date().valueOf() * Math.random()) + "";
+    const secretKey = User.encryptPassword(email, secretKeySalt);
+    return secretKey.slice(0, 10);
+  };
+
   User.associate = function (models) {
     this.hasMany(models.Room, {
-      foreignKey: 'userId',
-      onDelete: 'cascade',
+      foreignKey: "userId",
+      onDelete: "cascade",
     });
   };
   return User;
