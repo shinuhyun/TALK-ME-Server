@@ -15,7 +15,6 @@ module.exports = {
       });
     } catch (err) {
       console.log(err);
-      console.log(email, password);
       res.status(500).send({ message: "Server Error" });
     }
   },

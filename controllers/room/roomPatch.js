@@ -37,6 +37,7 @@ module.exports = {
         res.status(401).send({ message: "Unauthorized User" });
       }
     } catch (err) {
+      console.log(err);
       res.status(500).send({ message: "Server Error" });
     }
   },

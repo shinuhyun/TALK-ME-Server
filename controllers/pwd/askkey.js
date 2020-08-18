@@ -71,19 +71,19 @@ module.exports = {
         const { transporter, mailOptions } = makeTransporter(email, secretKey);
 
         // 메일을 전송하는 부분
-        transporter.sendMail(mailOptions, (err, res) => {
+        transporter.sendMail(mailOptions, (err, result) => {
           if (err) {
             console.log("failed... => ", err);
+            res.status(404).send({ message: "No recipients defined." });
           } else {
-            console.log("succeed... => ", res);
+            console.log("succeed... => ", result);
+            res.status(200).send({ message: "Please check your email." });
           }
-
           transporter.close();
         });
-
-        res.status(200).send({ message: "Please check your email." });
       }
     } catch (err) {
+      console.log(err);
       res.status(500).send({ message: "Server Error" });
     }
   },

@@ -60,7 +60,6 @@ module.exports = (sequelize, DataTypes) => {
         where: { email, password: encryptedPassword },
       });
     }
-
     return user;
   };
 
