@@ -1,5 +1,5 @@
-const { Question, Room } = require('../../models');
-const Sequelize = require('sequelize');
+const { Question, Room } = require("../../models");
+const Sequelize = require("sequelize");
 
 module.exports = {
   get: async (req, res) => {
@@ -15,29 +15,30 @@ module.exports = {
         const rooms = await Room.findAll({
           where: { userId: sess.userId },
           attributes: [
-            'id',
-            'title',
+            "id",
+            "title",
             [
-              Sequelize.fn('COUNT', Sequelize.col('questions.id')),
-              'questionCount',
+              Sequelize.fn("COUNT", Sequelize.col("questions.id")),
+              "questionCount",
             ],
           ],
           include: [
             {
               model: Question,
-              as: 'questions',
+              as: "questions",
               attributes: [],
             },
           ],
-          group: ['Room.id'],
+          group: ["Room.id"],
         });
 
         res.status(200).json({ rooms });
       } else {
-        res.status(401).send({ message: 'Unauthorized User' });
+        res.status(401).send({ message: "Unauthorized User" });
       }
     } catch (err) {
-      res.status(500).send({ message: 'Server Error' });
+      console.log(err);
+      res.status(500).send({ message: "Server Error" });
     }
   },
 };

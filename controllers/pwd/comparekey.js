@@ -17,6 +17,7 @@ module.exports = {
         res.status(200).send({ message: "Correct Secret Key" });
       }
     } catch (err) {
+      console.log(err);
       res.status(500).send({ message: "Server Error" });
     }
   },
