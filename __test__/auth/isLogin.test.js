@@ -45,7 +45,7 @@ describe('Auth GET API - LOGIN', () => {
             done(err);
             return;
           }
-          expect(res).to.have.status(401);
+          expect(res).to.have.status(200);
           expect(res.body.message).to.equal('unauthorized');
           done();
         });
