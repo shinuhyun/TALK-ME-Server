@@ -1,8 +1,8 @@
-const path = require('path');
-require('dotenv').config(path.join(__dirname, '../../', 'env'));
-const { OAuth2Client } = require('google-auth-library'); // token 검증 라이브러리
-const axios = require('axios');
-const { User } = require('../../models');
+const path = require("path");
+require("dotenv").config(path.join(__dirname, "../../", "env"));
+const { OAuth2Client } = require("google-auth-library"); // token 검증 라이브러리
+const axios = require("axios");
+const { User } = require("../../models");
 
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
@@ -17,7 +17,7 @@ const verifyTokenAndGetUserInfo = async (idToken) => {
 };
 
 const getIdTokenFromGoogle = async (code) => {
-  const url = `https://oauth2.googleapis.com/token?code=${code}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_PASSWORD}&redirect_uri=http://${process.env.ip}:4000/auth/social&grant_type=authorization_code`;
+  const url = `https://oauth2.googleapis.com/token?code=${code}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_PASSWORD}&redirect_uri=${process.env.REDIRECT_URI}&grant_type=authorization_code`;
   try {
     const {
       data: { id_token },
@@ -43,12 +43,16 @@ module.exports = {
 
       // 로그인 기록 저장
       req.session.userId = user.id;
-
-      // 채팅방목록 화면으로 리다이렉트
-      res.redirect('http://localhost:3000/roomlist');
+      req.session.save((err) => {
+        if (err) {
+          throw Error(err);
+        }
+        // 채팅방목록 화면으로 리다이렉트
+        res.redirect("http://localhost:3000/roomlist");
+      });
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: 'server error' });
+      res.status(500).json({ message: "server error" });
     }
   },
 };
