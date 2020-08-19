@@ -19,7 +19,11 @@ module.exports = {
       }
     } catch (err) {
       console.log(err);
-      res.status(500).send({ message: "Server Error" });
+      if (err.name === "SequelizeValidationError") {
+        res.status(404).send({ message: "wrong email format" });
+      } else {
+        res.status(500).send({ message: "Server Error" });
+      }
     }
   },
 };
