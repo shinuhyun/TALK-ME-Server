@@ -1,0 +1,14 @@
+[
+  {
+    "text": "this is simple question",
+    "roomId": 1
+  },
+  {
+    "text": "Hello World!",
+    "roomId": 1
+  },
+  {
+    "text": "where are you going?",
+    "roomId": 2
+  }
+]

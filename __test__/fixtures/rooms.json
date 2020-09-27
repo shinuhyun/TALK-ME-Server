@@ -1,0 +1,12 @@
+[
+  {
+    "title": "room1",
+    "description": "this is room1",
+    "userId": 1
+  },
+  {
+    "title": "room2",
+    "description": "this is room2",
+    "userId": 2
+  }
+]
